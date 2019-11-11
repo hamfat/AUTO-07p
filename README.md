@@ -1,2 +1,2 @@
 # AUTO-07p
-Simulation of excitable systems in AUTO software
+Bifurcation Analysis of Pacemaker Dynamics in Muscle Cells Model with AUTO. The codimension-1 and -2 bifurcations diagrams are generated with this code. 
