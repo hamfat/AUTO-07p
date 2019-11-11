@@ -1,43 +1,99 @@
-
-#type auto ('mw.auto') in auto interface to run this file
-
-
-
-#compute the bifurcation diagram
 r1=run('mw',STOP=["HB2"])
 
-#compute the periodic solution
-r2=run(r1("HB1"),ISP=2,ICP=[7,11],IPS=2)
 
-#plot run 1 and 2
-plot(r1+r2)
-
-#compute the Hopf curves
-r3=run(r1("HB1"),ISW=2,ICP=[7,9],STOP=[],NMX=2000)+run(r1("HB1"),ISW=2,ICP=[7,9],STOP=[],DS="-",NMX=2000)
+r2=run(r1("HB1"),ISP=2,ICP=[6,11],IPS=2)
 
 
-#compute the saddle-node curves
-r4=run(r1("LP1"),ISW=2,ICP=[7,9],STOP=[],NMX=2000)+run(r1("LP1"),ISW=2,ICP=[7,9],STOP=[],NMX=2000,DS='-')
+#p1=plot(r1+r2)
 
-#plot run 3 and 4
-plot(r3+r4)
 
-#compute the limit point of periodic orbits
-t2=run(r1("HB1"),ICP=[7,11],ISW=-1,IPS=2)
-t3=run(t2("LP1"),ISW=2,ICP=[7,9,11])
+#run(r1("HB1"),ISW=2,ICP=[6,8],STOP=[],NMX=1000)+
+
+r3=run(r1("HB1"),ISW=2,ICP=[6,8],STOP=[],DS="-",NMX=2000)
+
+
+r3.writeRawFilename('HB_curve.dat')
+
+#plot(r3)
+
+
+r4=run(r1("LP1"),ISW=2,ICP=[6,8],STOP=[],NMX=350)+run(r1("LP1"),ISW=2,ICP=[6,8],STOP=[],NMX=350,DS='-')
+
+r4.writeRawFilename('SN_curve.dat')
+
+
+#plot(r4)
+
+
+t2=run(r1("HB1"),ICP=[6,11],ISW=-1,IPS=2)
+t3=run(t2("LP1"),ISW=2,ICP=[6,8,11])
 t4=run(t3,NMX=1000,DS='-')+run(t3,NMX=1000)
+t4.writeRawFilename('LPC_curve.dat')
+#plot t4
 
 
-#rHom and rHighPer are used in computing the homoclinc
-r9=run(r1("HB1"),ISP=2,ICP=[7,11],IPS=2,UZSTOP={11:3000})
-rHom=run(r9("UZ1"),IPS=9,ISTART=4,ICP=[7,9],NSTAB=1,IEQUIB=2,NMX=2000)+run(r9("UZ1"),IPS=9,ISTART=4,ICP=[7,9],NSTAB=1,IEQUIB=2,NMX=2000,DS='-')
-plot(rHom)
-rHigPer =run(r9("UZ1"),ICP=[7,9],NMX=2000)+run(r9("UZ1"),ICP=[7,9],DS='-',NMX=2000)
-plot(rHigPer)
+#ANDRUS WAS HERE
+#r1=run('mw',STOP=["HB2"])
+r9=run(r1("HB1"),ISP=2,ICP=[6,11],IPS=2,UZSTOP={11:3000})
+rHom=run(r9("UZ1"),IPS=9,ISTART=4,ICP=[6,8],NSTAB=1,IEQUIB=2,NMX=1000)+run(r9("UZ1"),IPS=9,ISTART=4,ICP=[6,8],NSTAB=1,IEQUIB=2,NMX=1000,DS='-')
+#plot(rHom)
+rHigPer =run(r9("UZ1"),ICP=[6,8],NMX=1000)+run(r9("UZ1"),ICP=[6,8],DS='-',NMX=1000)
+rHigPer.writeRawFilename('HOM_curve.dat')
+#plot(rHigPer)
+#ANDRUS LEFT HERE
 
 
-#plot the full codimesion-2 bifurcation diagram in(Par(7),Par(9)) plane
-r12=plot(r3+r4+t4+rHigPer)
+r12=r3+r4+t4+rHigPer
+
+#r12.writeRawFilename('vbvd.csv')
+
+
+
+plot(r12)
+
+
+
+print r12
+
+
+
+
+
+
+
+#r11=run('mw',ICP=[9,7],UZR={-9:0})
+
+#r12=run(r11("UZ1"),ICP=[7,9],NMX=1000)
+
+
+
+
+#r14=run(r13("LP1"),ISW=2,ICP=[7,9,11])
+
+#r15=run(r14,NMX=500,DS='-')+run(r14,NMX=500)
+
+#fixing vd
+
+#r16=run('mw',ICP=[9,7],UZR={-9:-0.190381})
+#r17=run(r16("UZ1"),ICP=[7,9],NMX=500)
+#r18=run(r17("HB1"),IPS=2,ISP=2,ISW=-1,ICP=[7,11])
+
+
+
+
+
+#hc1=run(e='hc1',c='mw',DS=1e-3)
+
+#hc2=run(hc1("HB1"),IPS=2,ISW=-1,ICP=[7,11])
+
+#hc3=run(hc2(18),e='hc',IPS=9,ISTART=4,IEQUIB=1,ICP=[7,9],ISW=1)
+
+#test=run('mw',UZR={7:-0.794},STOP=["UZ3"],DSMAX=1e-3,NMX=2000,ILP=0)
+#test=run('mw',UZR={7:-0.79497091437},STOP=["UZ3"],DSMAX=1e-3,NMX=2000)
+#test=run('mw',UZR={7:-0.79497091437},STOP=["UZ3"],DSMAX=1e-3)
+#test=run('mw',UZR={-7:-0.79497091437})
+#print hc3()[-1]
+
 
 print "\n***Clean the directory***"
 clean()
